@@ -7,14 +7,17 @@
     <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-    
-    <form id="loginContainer">
-        <label id="userNameEntry">UserName:</label>
-        <input id="userNameEntry" type="text" placeholder="User Name">
-        <label id="passwordEntry">Password:</label>
-        <input id="passwordEntry" type="text" placeholder="Password">
-        <button type="button" onclick="logIn()">Log on</button>
-    </form>
+    <div id="content">
+        <form id="loginContainer">
+            <label id="userNameEntry">UserName:</label>
+            <input id="userNameEntry" type="text" placeholder="User Name">
+            <label id="passwordEntry">Password:</label>
+            <input id="passwordEntry" type="text" placeholder="Password">
+            <button type="button" onclick="logIn()">Log on</button>
+        </form>
+        <span id="responseMessage">Response</span>
+    </div>
+
     <script src="../js/login.js"></script>
 </body>
 </html>
