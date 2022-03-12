@@ -9,15 +9,16 @@
 <body>
     <div id="content">
         <form id="loginContainer">
-            <label id="userNameEntry">UserName:</label>
-            <input id="userNameEntry" type="text" placeholder="User Name">
-            <label id="passwordEntry">Password:</label>
-            <input id="passwordEntry" type="text" placeholder="Password">
-            <button type="button" onclick="logIn()">Log on</button>
+            <label for="usernameInput">Username:</label>
+            <input id="usernameInput" type="text" placeholder="User Name">
+            <label for="passwordInput">Password:</label>
+            <input id="passwordInput" type="text" placeholder="Password">
+            <button type="button" onclick="logIn()">Log in</button>
         </form>
-        <span id="responseMessage">Response</span>
+        <span id="responseText"></span>
+
     </div>
 
-    <script src="../js/login.js"></script>
+    <script src="../client/login.js"></script>
 </body>
 </html>
