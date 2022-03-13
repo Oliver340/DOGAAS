@@ -19,7 +19,7 @@ app.use((req, res, next) => {
     next();
 });
 
-
+// GET DOG IMAGE
 app.get("/", (req, res) => {
     // SQL has AUTO INCREMENT for the number of requests
     connection.query(`INSERT INTO EndPoints (endPoint, method) VALUES ("getDog", "GET")`, // PROBABLY CHANGE THESE VALUES
@@ -38,6 +38,34 @@ app.get("/", (req, res) => {
     });
 });
 
+// POST DOG TO DB
+app.post("/post-dog", (req, res) => {
+    let input = "";
+    req.on("data", (chunk) => {
+        if (chunk != null) {
+            input += chunk;
+        }
+    });
+    req.on("end", () => {
+        let query = url.parse(input, true).query;
+
+        let dogURL = query["dogURL"];
+
+        connection.query(
+            `INSERT INTO Dogs (imageURL) VALUES ("${dogURL}")`,
+            (sqlErr, sqlRes) => {
+                if (sqlErr) {
+                    res.status(404).send("Error posting data!");
+                }
+
+                res.status(200).send(`${dogURL} was stored in the DB`);
+            }
+        );
+    });
+});
+
+
+// LOGIN FOR ADMIN
 app.post("/admin", (req, res) => {
     let input = "";
     req.on("data", (chunk) => {
