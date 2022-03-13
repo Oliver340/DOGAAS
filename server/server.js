@@ -19,6 +19,25 @@ app.use((req, res, next) => {
     next();
 });
 
+
+app.get("/", (req, res) => {
+    // SQL has AUTO INCREMENT for the number of requests
+    connection.query(`INSERT INTO EndPoints (endPoint, method) VALUES ("getDog", "GET")`, // PROBABLY CHANGE THESE VALUES
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(404).send("Error incrementing endpoints!");
+            }
+        }
+    );
+
+    // Gets random imageurl from dogs table I think???
+    connection.query(`SELECT imageURL FROM Dogs
+    ORDER BY RAND()
+    LIMIT 1`, (err, result) => {
+        res.send(JSON.stringify(result));
+    });
+});
+
 app.post("/admin", (req, res) => {
     let input = "";
     req.on("data", (chunk) => {
