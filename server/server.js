@@ -5,11 +5,10 @@ const port = 1337;
 const app = express();
 
 const connection = mysql.createConnection({
-    host: "",
-    port: "",
-    user: "",
-    password: "",
-    database: "",
+    host: "137.184.10.207",
+    user: "DOGAAS",
+    password: "acrBLSRtaypDkLsk",
+    database: "DOGAAS",
 });
 
 app.use((req, res, next) => {
@@ -80,13 +79,13 @@ app.post("/admin", (req, res) => {
         let password = query["password"];
 
         // Input validation
-        connection.query(`SELECT adminName FROM Admins`, (sqlErr, sqlRes) => {
-            if (username != sqlRes) {
+        connection.query(`SELECT 1 FROM Admins WHERE adminName = '${username}'`, (sqlErr, sqlRes) => {
+            if (sqlRes != '1') {
                 res.status(404).send("Invalid Username");
             }
         });
-        connection.query(`SELECT password FROM Admins`, (sqlErr, sqlRes) => {
-            if (password != sqlRes) {
+        connection.query(`SELECT 1 FROM Admins WHERE password = '${password}' AND adminName = '${username}'`, (sqlErr, sqlRes) => {
+            if (sqlRes != '1') {
                 res.status(404).send("Invalid Password");
             }
         });
@@ -94,7 +93,6 @@ app.post("/admin", (req, res) => {
         connection.query(`SELECT * FROM EndPoints`, (err, result) => {
             res.send(JSON.stringify(result));
         });
-
     });
 });
 
