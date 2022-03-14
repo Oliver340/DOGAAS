@@ -1,7 +1,7 @@
 const dogInput = document.getElementById("dogInput");
 const responseText = document.getElementById("responseText");
 const xhttp = new XMLHttpRequest();
-const endPoint = "https://SERVER_NAME"; //CHANGE
+const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
 xhttp.onreadystatechange = function () {
     if (xhttp.readyState == 4) {
@@ -20,7 +20,7 @@ let postDog = function () {
         return;
     }
 
-    xhttp.open("POST", endPoint, true);
+    xhttp.open("POST", endPoint + '/post-dog', true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send("?dogURL=" + dogURL);
 };

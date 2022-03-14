@@ -1,6 +1,6 @@
 const dogImg = document.getElementById("dogImg");
 const xhttp = new XMLHttpRequest();
-const endPoint = "https://SERVER_NAME"; //CHANGE
+const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
 xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4) {

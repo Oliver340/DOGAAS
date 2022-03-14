@@ -2,7 +2,7 @@ const usernameInput = document.getElementById("usernameInput");
 const passwordInput = document.getElementById("passwordInput");
 const responseText = document.getElementById("responseText");
 const xhttp = new XMLHttpRequest();
-const endPoint = "https://SERVER_NAME"; //CHANGE
+const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
 xhttp.onreadystatechange = function () {
     if (xhttp.readyState == 4) {
@@ -23,7 +23,7 @@ let logIn = function () {
         return;
     }
 
-    xhttp.open("POST", endPoint, true);
+    xhttp.open("POST", endPoint + '/admin', true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send("?username=" + username + "&password=" + password);
 };
