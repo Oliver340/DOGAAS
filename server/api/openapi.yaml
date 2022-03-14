@@ -1,0 +1,238 @@
+openapi: 3.0.0
+info:
+  title: DOGaaS - Dog as a Service
+  description: "DOGaaS - Get dog pictures, post dog pictures, become dog pictures."
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/DOGAAS/dogaasac/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://dogaas.nitropan.software/DOGAAS/dogaasac/1.0.0
+  description: SwaggerHub API Auto Mocking
+security:
+- accessCode:
+  - read
+  - write
+paths:
+  /dog:
+    get:
+      tags:
+      - Dog
+      summary: Get a dog picture
+      description: Request a picture of a dog.
+      operationId: dogGET
+      responses:
+        "200":
+          description: OK
+      x-swagger-router-controller: Dog
+    post:
+      tags:
+      - Dog
+      summary: Post a dog picture
+      description: Post a picture of a dog.
+      operationId: dogPOST
+      requestBody:
+        description: posted dog
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/postdog'
+        required: true
+      responses:
+        "200":
+          description: OK
+      x-swagger-router-controller: Dog
+  /dog/{tagId}:
+    get:
+      tags:
+      - Dog
+      summary: Get a dog picture
+      description: Request a picture of a dog with the specified tag.
+      operationId: dogTagIdGET
+      parameters:
+      - name: tagId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: invalid tagId
+      x-swagger-router-controller: Dog
+    put:
+      tags:
+      - Dog
+      summary: Update a dog picture
+      description: Update a picture of a dog.
+      operationId: dogTagIdPUT
+      parameters:
+      - name: tagId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: posted dog
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/postdog'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: invalid tagId
+      x-swagger-router-controller: Dog
+    delete:
+      tags:
+      - Dog
+      summary: Delete a dog picture
+      description: Delete a picture of a dog.
+      operationId: dogTagIdDELETE
+      parameters:
+      - name: tagId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: invalid tagId
+      x-swagger-router-controller: Dog
+  /user:
+    post:
+      tags:
+      - User
+      summary: Login User
+      description: Login user
+      operationId: userPOST
+      requestBody:
+        description: Login user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid Credientials
+      x-swagger-router-controller: User
+  /user/{username}:
+    put:
+      tags:
+      - User
+      summary: Update user
+      description: Updates a user's personal info
+      operationId: userUsernamePUT
+      parameters:
+      - name: username
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Update user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Cannot update user you don't own
+      x-swagger-router-controller: User
+    delete:
+      tags:
+      - User
+      summary: Delete yourself
+      description: Suicide
+      operationId: userUsernameDELETE
+      parameters:
+      - name: username
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: "Cannot delete user, already deleted (or you are not this user)"
+      x-swagger-router-controller: User
+  /admin:
+    post:
+      tags:
+      - Admin
+      summary: Login admin
+      description: Login admin
+      operationId: adminPOST
+      requestBody:
+        description: Login admin
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid Credientials
+      x-swagger-router-controller: Admin
+  /ping:
+    get:
+      tags:
+      - Server
+      summary: Server heartbeat operation
+      description: "This operation shows how to override the global security defined\
+        \ above, as we want to open it up for all users."
+      operationId: pingGET
+      responses:
+        "200":
+          description: OK
+      security: []
+      x-swagger-router-controller: Server
+components:
+  schemas:
+    postdog:
+      properties:
+        url:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    login:
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+  securitySchemes:
+    accessCode:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: http://example.com/oauth/auth
+          tokenUrl: http://example.com/oauth/token
+          scopes:
+            write: allows modifying resources
+            read: allows reading resources
