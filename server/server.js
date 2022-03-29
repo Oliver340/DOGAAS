@@ -1,17 +1,9 @@
 const url = require("url");
 const express = require("express");
-const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const { allowedNodeEnvironmentFlags } = require("process");
 const port = 1337;
 const app = express();
-
-const connection = mysql.createConnection({
-    host: "137.184.10.207",
-    user: "DOGAAS",
-    password: "acrBLSRtaypDkLsk",
-    database: "DOGAAS",
-});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -105,8 +97,4 @@ app.post("/admin", (req, res) => {
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}!`);
-});
-
-connection.connect((err) => {
-    console.log(`Database connected!`);
 });
