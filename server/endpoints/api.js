@@ -53,12 +53,13 @@ module.exports = (router) => {
             let dogURL = query["dogURL"];
 
             connection.query(
-                `INSERT INTO Dogs (imageURL) VALUES ("${dogURL}")`,
+                `INSERT INTO Dogs (dogID, imageURL) VALUES (0, '${dogURL}')`,
                 (sqlErr, sqlRes) => {
                     if (sqlErr) {
-                        res.status(404).send("Error posting data!");
+                        res.status(404).send(sqlErr);
+                        //res.status(404).send("Error posting data!");
                     }
-
+    
                     res.status(200).send(`${dogURL} was stored in the DB`);
                 }
             );
