@@ -9,6 +9,7 @@
  **/
 exports.dogGET = function() {
   return new Promise(function(resolve, reject) {
+    console.log(`boggo`);
     resolve();
   });
 }

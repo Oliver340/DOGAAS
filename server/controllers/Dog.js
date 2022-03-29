@@ -4,6 +4,7 @@ var utils = require('../utils/writer.js');
 var Dog = require('../service/DogService');
 
 module.exports.dogGET = function dogGET (req, res, next) {
+  console.log(`boggo`);
   Dog.dogGET()
     .then(function (response) {
       utils.writeJson(res, response);
