@@ -41,28 +41,17 @@ module.exports = (router) => {
 
     // post a dog picture
     router.post('/dog', verify, (req, res) => {
-        let input = "";
-        req.on("data", (chunk) => {
-            if (chunk != null) {
-                input += chunk;
-            }
-        });
-        req.on("end", () => {
-            let query = url.parse(input, true).query;
+        let dogURL = req.body.imageURL;
 
-            let dogURL = query["dogURL"];
-
-            connection.query(
-                `INSERT INTO Dogs (imageURL) VALUES ("${dogURL}")`,
-                (sqlErr, sqlRes) => {
-                    if (sqlErr) {
-                        res.status(404).send("Error posting data!");
-                    }
-
-                    res.status(200).send(`${dogURL} was stored in the DB`);
+        connection.query(
+            `INSERT INTO Dogs (imageURL) VALUES ("${dogURL}")`,
+            (sqlErr, sqlRes) => {
+                if (sqlErr) {
+                    res.status(404).send("Error posting data!");
                 }
-            );
-        });
+                res.status(200).send(`${dogURL} was stored in the DB`);
+            }
+        );
     });
 
     // delete a dog picture
