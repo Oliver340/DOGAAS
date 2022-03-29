@@ -17,6 +17,7 @@ app.use((req, res, next) => {
 
 const routes = require('./endpoints/api')(app);
 
+/** 
 // GET DOG IMAGE
 app.get("/", (req, res) => {
     // SQL has AUTO INCREMENT for the number of requests
@@ -50,10 +51,11 @@ app.post("/post-dog", (req, res) => {
         let dogURL = query["dogURL"];
 
         connection.query(
-            `INSERT INTO Dogs (imageURL) VALUES ("${dogURL}")`,
+            `INSERT INTO Dogs (dogID, imageURL) VALUES (0, '${dogURL}')`,
             (sqlErr, sqlRes) => {
                 if (sqlErr) {
-                    res.status(404).send("Error posting data!");
+                    res.status(404).send(sqlErr);
+                    //res.status(404).send("Error posting data!");
                 }
 
                 res.status(200).send(`${dogURL} was stored in the DB`);
@@ -79,12 +81,12 @@ app.post("/admin", (req, res) => {
 
         // Input validation
         connection.query(`SELECT 1 FROM Admins WHERE adminName = '${username}'`, (sqlErr, sqlRes) => {
-            if (sqlRes != '1') {
+            if (sqlRes > 0) {
                 res.status(404).send("Invalid Username");
             }
         });
         connection.query(`SELECT 1 FROM Admins WHERE password = '${password}' AND adminName = '${username}'`, (sqlErr, sqlRes) => {
-            if (sqlRes != '1') {
+            if (sqlRes > 0) {
                 res.status(404).send("Invalid Password");
             }
         });
@@ -94,6 +96,7 @@ app.post("/admin", (req, res) => {
         });
     });
 });
+**/
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}!`);
