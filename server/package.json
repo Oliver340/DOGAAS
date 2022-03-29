@@ -2,13 +2,13 @@
   "name": "dogaas-dog-as-a-service",
   "version": "1.0.0",
   "description": "DOGaaS - Get dog pictures, post dog pictures, become dog pictures.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "prestart": "npm install",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "keywords": [
-    "swagger"
+    "dogpictures"
   ],
   "license": "Unlicense",
   "private": true,
