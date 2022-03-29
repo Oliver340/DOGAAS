@@ -6,15 +6,12 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 const tokenKey = "iR%^anOi2br67"; // should be in .env but w/e
 
-const connection = mysql.createConnection({
+const connection  = mysql.createPool({
+    connectionLimit : 100,
     host: "137.184.10.207",
     user: "DOGAAS",
     password: "acrBLSRtaypDkLsk",
-    database: "DOGAAS",
-});
-
-connection.connect((err) => {
-    console.log(`Database connected!`);
+    database: "dogaas"
 });
 
 module.exports = (router) => {
@@ -41,7 +38,7 @@ module.exports = (router) => {
 
     // post a dog picture
     router.post('/dog', verify, (req, res) => {
-        let dogURL = req.body.dogURL;
+        let dogURL = req.query.dogURL;
 
         connection.query(
             `INSERT INTO Dogs (dogID, imageURL) VALUES (0, '${dogURL}')`,
@@ -49,8 +46,9 @@ module.exports = (router) => {
                 if (sqlErr) {
                     res.status(404).send(sqlErr);
                     //res.status(404).send("Error posting data!");
+                } else {
+                    res.status(200).send(`${dogURL} was stored in the DB`);
                 }
-                res.status(200).send(`${dogURL} was stored in the DB`);
             }
         );
     });
