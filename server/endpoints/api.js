@@ -107,34 +107,34 @@ module.exports = (router) => {
         const username = req.body.username;
 
         // user login query
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hash = await bcrypt.hash(password, salt);
-
-        // salted and hashed password so we can find it in the database
-        connection.query(`SELECT 1 FROM Users 
-                          WHERE userName = '${username}' AND password = '${hash}'`, 
-        (sqlErr, sqlRes) => {
-            if (sqlErr) {
-                res.status(500).send("Database error!");
-            }
-            
-            if (sqlRes > 0) {
-                res.status(401).send("Invalid username or password");
-            } else {
-                const token = jwt.sign(
-                    {
-                        username: username
-                    },
-                    tokenKey,
-                    {
-                        expiresIn: "12h"
+        bcrypt.genSalt(saltRounds, (err, salt) => {
+            bcrypt.hash(password, salt, (err, hash) => {
+                // salted and hashed password so we can find it in the database
+                connection.query(`SELECT 1 FROM Users 
+                                  WHERE userName = '${username}' AND password = '${hash}'`, 
+                (sqlErr, sqlRes) => {
+                    if (sqlErr) {
+                        res.status(500).send("Database error!");
                     }
-                );
-                // Increment end point usage counter
-                dbUtil.incrementEndPoint('userPost');
 
-                res.status(200).send(JSON.stringify({ token: token }));
-            }
+                    if (sqlRes > 0) {
+                        res.status(401).send("Invalid username or password");
+                    } else {
+                        const token = jwt.sign(
+                        {
+                            username: username
+                        },
+                        tokenKey,
+                        {
+                            expiresIn: "12h"
+                        });
+                        // Increment end point usage counter
+                        dbUtil.incrementEndPoint('userPost');
+
+                        res.status(200).send(JSON.stringify({ token: token }));
+                    }
+                });
+            });
         });
     });
 
@@ -147,32 +147,34 @@ module.exports = (router) => {
             res.status(400).send(JSON.stringify({ message: "Username or password cannot be empty" }));
         }
 
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hash = await bcrypt.hash(password, salt);
+        bcrypt.genSalt(saltRounds, (err, salt) => {
+            bcrypt.hash(password, salt, (err, hash) => {
+                // store hash in database
+                connection.query(`INSERT INTO Users (userName, password)
+                                  VALUES ('${username}', '${hash}')`, 
+                (sqlErr, sqlRes) => {
+                    if (sqlErr) {
+                        res.status(500).send(`Database error!`);
+                    } else {
+                        // create a token that contains the database PK
+                        const token = jwt.sign(
+                        { 
+                            username: username,
+                        },
+                        tokenKey,
+                        {
+                            expiresIn: "12h"
+                        });
+                        // Increment end point usage counter
+                        dbUtil.incrementEndPoint('userCreate');
 
-        // store hash in database
-        connection.query(`INSERT INTO Users (userName, password)
-                          VALUES ('${username}', '${hash}')`, 
-        (sqlErr, sqlRes) => {
-            if (sqlErr) {
-                res.status(500).send(`Database error!`);
-            } else {
-                // create a token that contains the database PK
-                const token = jwt.sign(
-                    { 
-                        username: username,
-                    },
-                    tokenKey,
-                    {
-                        expiresIn: "12h"
+                        res.status(200).send(JSON.stringify({ token: token }));
                     }
-                );
-                // Increment end point usage counter
-                dbUtil.incrementEndPoint('userCreate');
-
-                res.status(200).send(JSON.stringify({ token: token }));
-            }
+                });
+            });
         });
+
+        
     });
 
     // suicide
