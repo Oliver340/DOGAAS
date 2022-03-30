@@ -1,13 +1,14 @@
-const verify = require('./verifyToken');
 const mysql = require("mysql");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const verify = require('../modules/verifyToken');
+const dbUtil = require('../modules/databaseUtil');
 
 const saltRounds = 10;
 const tokenKey = "iR%^anOi2br67"; // should be in .env but w/e
 
 const connection  = mysql.createPool({
-    connectionLimit : 100,
+    connectionLimit: 100,
     host: "137.184.10.207",
     user: "DOGAAS",
     password: "acrBLSRtaypDkLsk",
@@ -15,24 +16,23 @@ const connection  = mysql.createPool({
 });
 
 module.exports = (router) => {
-
-    // dog routing
+    // === Dog routing === //
 
     // get a random dog picture
     router.get('/dog', verify, (req, res) => {
-        // SQL has AUTO INCREMENT for the number of requests
-        connection.query(`INSERT INTO EndPoints (endPoint, method) VALUES ("getDog", "GET")`, // PROBABLY CHANGE THESE VALUES
+        // Gets random imageurl from dogs table
+        connection.query(`SELECT imageURL FROM Dogs
+                          ORDER BY RAND()
+                          LIMIT 1`, 
         (sqlErr, sqlRes) => {
             if (sqlErr) {
-                res.status(404).send("Error incrementing endpoints!");
-            }
-        });
+                res.status(500).send(`Database error!`);
+            } else {
+                // Increment end point usage counter
+                dbUtil.incrementEndPoint('dogGet');
 
-        // Gets random imageurl from dogs table I think???
-        connection.query(`SELECT imageURL FROM Dogs
-        ORDER BY RAND()
-        LIMIT 1`, (err, result) => {
-            res.send(JSON.stringify(result));
+                res.send(JSON.stringify(sqlRes));
+            }
         });
     });
 
@@ -44,9 +44,11 @@ module.exports = (router) => {
             `INSERT INTO Dogs (dogID, imageURL) VALUES (0, '${dogURL}')`,
             (sqlErr, sqlRes) => {
                 if (sqlErr) {
-                    res.status(404).send(sqlErr);
-                    //res.status(404).send("Error posting data!");
+                    res.status(500).send(`Error storing ${dogURL} in the DB!`);
                 } else {
+                    // Increment end point usage counter
+                    dbUtil.incrementEndPoint('dogPost');
+
                     res.status(200).send(`${dogURL} was stored in the DB`);
                 }
             }
@@ -60,6 +62,9 @@ module.exports = (router) => {
 
         // username for user purposes
         let user = req.user.username;
+
+        // Increment end point usage counter
+        dbUtil.incrementEndPoint('dogTagIdDelete');
     });
 
     // get a specific dog picture
@@ -67,10 +72,18 @@ module.exports = (router) => {
         // get that dog by tag
         let tag = req.params.tagId;
 
-        // Gets random imageurl from dogs table I think???
+        // Gets dog URL by ID
         connection.query(`SELECT imageURL FROM Dogs
-        WHERE tag = ${tag}`, (err, result) => {
-            res.send(JSON.stringify(result));
+                          WHERE tag = ${tag}`, 
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(500).send(`Database error!`);
+            } else {
+                // Increment end point usage counter
+                dbUtil.incrementEndPoint('dogTagIdGet');
+
+                res.send(JSON.stringify(sqlRes));
+            }
         });
     });
 
@@ -80,10 +93,13 @@ module.exports = (router) => {
         let tag = req.params.tagId;
         let dogURL = req.body.imageURL;
         let user = req.user.username;
+
+        // Increment end point usage counter
+        dbUtil.incrementEndPoint('dogTagIdPut');
     });
 
 
-    // user routing
+    // === User routing === //
 
     // login user
     router.post('/user', (req, res) => {
@@ -92,24 +108,19 @@ module.exports = (router) => {
 
         // user login query
         const salt = await bcrypt.genSalt(saltRounds);
-
         const hash = await bcrypt.hash(password, salt);
 
         // salted and hashed password so we can find it in the database
-        connection.query(`SELECT 1 FROM Users WHERE userName = '${username}'`, (sqlErr, sqlRes) => {
-            if (sqlRes > 0) {
-                res.status(404).send("Invalid Username");
-                return;
+        connection.query(`SELECT 1 FROM Users 
+                          WHERE userName = '${username}' AND password = '${hash}'`, 
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(500).send("Database error!");
             }
-        });
-
-        connection.query(`SELECT 1 FROM Users WHERE password = '${hash}' AND userName = '${username}'`, (sqlErr, sqlRes) => {
+            
             if (sqlRes > 0) {
-                res.status(404).send("Invalid Password");
-                return;
-            }
-
-            { // database query goes here, this is the success block
+                res.status(401).send("Invalid username or password");
+            } else {
                 const token = jwt.sign(
                     {
                         username: username
@@ -119,7 +130,9 @@ module.exports = (router) => {
                         expiresIn: "12h"
                     }
                 );
-        
+                // Increment end point usage counter
+                dbUtil.incrementEndPoint('userPost');
+
                 res.status(200).send(JSON.stringify({ token: token }));
             }
         });
@@ -127,31 +140,39 @@ module.exports = (router) => {
 
     // create user
     router.post('/userCreate', (req, res) => {
-        const password = req.body.password;
         const username = req.body.username;
+        const password = req.body.password;
 
-        if (!password || !username) {
-            res.status(400).send(JSON.stringify({ message: "need both username and password" }));
+        if (!username || !password) {
+            res.status(400).send(JSON.stringify({ message: "Username or password cannot be empty" }));
         }
 
         const salt = await bcrypt.genSalt(saltRounds);
         const hash = await bcrypt.hash(password, salt);
 
         // store hash in database
+        connection.query(`INSERT INTO Users (userName, password)
+                          VALUES ('${username}', '${hash}')`, 
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(500).send(`Database error!`);
+            } else {
+                // create a token that contains the database PK
+                const token = jwt.sign(
+                    { 
+                        username: username,
+                    },
+                    tokenKey,
+                    {
+                        expiresIn: "12h"
+                    }
+                );
+                // Increment end point usage counter
+                dbUtil.incrementEndPoint('userCreate');
 
-        // create a token that contains the database PK
-        { // database query goes here, this is the success block
-            const token = jwt.sign(
-                { 
-                    username: username,
-                },
-                tokenKey,
-                {
-                    expiresIn: "12h"
-                }
-            );
-            res.status(200).send(JSON.stringify({ token: token }));
-        }
+                res.status(200).send(JSON.stringify({ token: token }));
+            }
+        });
     });
 
     // suicide
@@ -164,6 +185,16 @@ module.exports = (router) => {
         }
 
         // remove user from database
+        connection.query(`DELETE FROM Users
+                          WHERE userName = '${username}'`, 
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(500).send(`Database error!`);
+            } else {
+                // Increment end point usage counter
+                dbUtil.incrementEndPoint('userUsernameDelete');
+            }
+        });
     });
 
     // update a user
@@ -173,10 +204,21 @@ module.exports = (router) => {
 
         // honestly not needed. if the user token exist it already contains the username and we should just use that
         if (username != req.user.username) {
-            res.status(401).send(JSON.stringify({ message: "can't update user that you aren't" }));
+            res.status(401).send(JSON.stringify({ message: "You may only update yourself!" }));
         }
 
         // update password
+        connection.query(`UPDATE Users
+                          SET password = '${password}'
+                          WHERE userName = '${username}'`, 
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(500).send(`Database error!`);
+            } else {
+                // Increment end point usage counter
+                dbUtil.incrementEndPoint('userUsernamePut');
+            }
+        });
     });
 
 
@@ -188,40 +230,51 @@ module.exports = (router) => {
 
         // login admin
         // Input validation
-        connection.query(`SELECT 1 FROM Admins WHERE adminName = '${username}'`, (sqlErr, sqlRes) => {
+        connection.query(`SELECT 1 FROM Admins 
+                          WHERE password = '${password}' AND adminName = '${username}'`, 
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(500).send("Database error!");
+            }
+            
             if (sqlRes > 0) {
-                res.status(404).send("Invalid Username");
+                res.status(401).send("Invalid username or password");
+            } else {
+                const token = jwt.sign(
+                    { 
+                        username: username,
+                    },
+                    tokenKey,
+                    {
+                        expiresIn: "12h"
+                    }
+                );
+                
+                // Provide endpoint data
+                connection.query(`SELECT * FROM EndPoints`, (sqlErr2, sqlRes2) => {
+                    if (sqlErr2) {
+                        res.status(500).send("Database error!");
+                    }
+                    
+                    if (sqlRes2 > 0) {
+                        res.status(401).send("Invalid username or password");
+                    }  else {
+                        // Increment end point usage counter
+                        dbUtil.incrementEndPoint('adminPost');
+
+                        res.status(200).send(JSON.stringify({ token: token, endpoints: sqlRes2 }));
+                    }
+                });
             }
         });
-        connection.query(`SELECT 1 FROM Admins WHERE password = '${password}' AND adminName = '${username}'`, (sqlErr, sqlRes) => {
-            if (sqlRes > 0) {
-                res.status(404).send("Invalid Password");
-            }
-        });
-
-        { // database query goes here, this is the success block
-            // admin probably doesn't need a token but it gets one anyways. User and Admin table should honestly be the same
-            // thing but with an ADMIN bool flag. more ubiquitous usage and less code duplication. Maybe not though.
-            const token = jwt.sign(
-                { 
-                    username: username,
-                },
-                tokenKey,
-                {
-                    expiresIn: "12h"
-                }
-            );
-
-            connection.query(`SELECT * FROM EndPoints`, (err, result) => {
-                res.status(200).send(JSON.stringify({ token: token, endpoints: result }));
-            });
-        }
     });
 
 
     // heartbeat
-
     router.get('/ping', (req, res) => {
+        // Increment end point usage counter
+        dbUtil.incrementEndPoint('pingGet');
+
         res.status(200).send(JSON.stringify({ message: "alive, probably" }));
     });
 };
