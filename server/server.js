@@ -15,7 +15,7 @@ app.use((req, res, next) => {
     next();
 });
 
-const routes = require('./endpoints/api')(app);
+const routes = require('./api/routes')(app);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}!`);
