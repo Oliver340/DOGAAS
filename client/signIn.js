@@ -21,8 +21,8 @@ xhttp.onreadystatechange = function () {
 };
 
 let signIn = function () {
-    let username = usernameInput.value;
-    let password = passwordInput.value;
+    let usr = usernameInput.value;
+    let pwd = passwordInput.value;
     if (!username.trim().length || !password.trim().length) {
         alert('Cannot leave any fields blank');
         return;
