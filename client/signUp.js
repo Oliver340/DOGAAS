@@ -7,23 +7,24 @@ const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 xhttp.onreadystatechange = function () {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
-            responseText.innerHTML = `<div>${xhttp.response}</div>`;
-            //document.getElementById("loginContainer").style.display = "none";
-        } else if (xhttp.status == 404) {
-            responseText.innerHTML = "Invalid Credentials";
+            let jsonData = JSON.parse(xhttp.response);
+            localStorage.setItem('token', jsonData.token);
+            window.location.href = "./getDog.html";
+        } else if (xhttp.status == 500) {
+            responseText.innerHTML = xhttp.response;
         }
     }
 };
 
-let validateAdmin = function () {
-    let username = usernameInput.value;
-    let password = passwordInput.value;
+let signUp = function () {
+    let usr = usernameInput.value;
+    let pwd = passwordInput.value;
     if (!username.trim().length || !password.trim().length) {
         alert('Cannot leave any fields blank');
         return;
     }
 
-    xhttp.open("POST", endPoint + '/admin', true);
+    xhttp.open("POST", endPoint + '/userCreate', true);
     xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
 };
