@@ -8,14 +8,14 @@ xhttp.onreadystatechange = function () {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             responseText.innerHTML = `<div>${xhttp.response}</div>`;
-            document.getElementById("loginContainer").style.display = "none";
+            //document.getElementById("loginContainer").style.display = "none";
         } else if (xhttp.status == 404) {
             responseText.innerHTML = "Invalid Credentials";
         }
     }
 };
 
-let logIn = function () {
+let validateAdmin = function () {
     let username = usernameInput.value;
     let password = passwordInput.value;
     if (!username.trim().length || !password.trim().length) {

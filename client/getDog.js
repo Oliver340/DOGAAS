@@ -1,4 +1,5 @@
 const dogImg = document.getElementById("dogImg");
+const dogTag = document.getElementById("dogTag");
 const xhttp = new XMLHttpRequest();
 const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
@@ -12,6 +13,11 @@ xhttp.onreadystatechange = function() {
 };
 
 const getDog = function() {
-    xhttp.open("GET", endPoint, true);
-    xhttp.send();
+    let selectedOption = dogTag.options[dogTag.selectedIndex].value;
+    if (selectedOption == 0) {
+        xhttp.open("GET", endPoint, true);
+        xhttp.send();
+    } else {
+        
+    }
 };

@@ -9,6 +9,9 @@ body {
     justify-content: center;
     align-items: center;
 }
+#content > * {
+    margin: 1%;
+}
 #dogImg {
-    width: 75vmin;
+    width: 50vmin;
 }
