@@ -24,13 +24,13 @@ module.exports = (router) => {
     // === User routing === //
 
     // login user
-    router.route(`${apiversion1}/dog/user`).post(controller.userPost);
+    router.route(`${apiversion1}/user`).post(controller.userPost);
 
     // create user
     router.route(`${apiversion1}/userCreate`).post(controller.userCreate);
 
     // suicide
-    router.route(`${apiversion1}/:username`).delete(verify, controller.userUsernameDelete);
+    router.route(`${apiversion1}/user/:username`).delete(verify, controller.userUsernameDelete);
 
     // update a user
     router.route(`${apiversion1}/user/:username`).put(verify, controller.userUsernamePut);
