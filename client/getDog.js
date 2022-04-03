@@ -18,6 +18,7 @@ const getDog = function() {
         xhttp.open("GET", endPoint, true);
         xhttp.send();
     } else {
-        
+        xhttp.open("GET", endPoint, true);
+        xhttp.send();
     }
 };
