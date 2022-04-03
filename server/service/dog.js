@@ -38,7 +38,7 @@ module.exports = {
                         // Increment end point usage counter
                         dbUtil.incrementEndPoint('/API/v1/dogPost');
 
-                        res.status(200).send(JSON.stringify({ message: `${dogURL} was stored in the DB`, dogID: sqlRes.dogID }));
+                        res.status(200).send(JSON.stringify({ message: `${dogURL} was stored in the DB`, dogID: sqlRes.dogId }));
                     });
                 }
             }
