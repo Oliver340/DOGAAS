@@ -21,14 +21,14 @@ xhttp.onreadystatechange = function () {
 };
 
 let signIn = function () {
-    let username = usernameInput.value;
-    let password = passwordInput.value;
+    let usr = usernameInput.value;
+    let pwd = passwordInput.value;
     if (!username.trim().length || !password.trim().length) {
         alert('Cannot leave any fields blank');
         return;
     }
 
-    xhttp.open("POST", endPoint + '/user', true);
+    xhttp.open("POST", endPoint + '/api/v1/user', true);
     xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
 };
