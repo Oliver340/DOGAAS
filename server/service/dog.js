@@ -12,7 +12,7 @@ module.exports = {
                 res.status(500).send(`Database error!`);
             } else {
                 // Increment end point usage counter
-                dbUtil.incrementEndPoint('dogGet');
+                dbUtil.incrementEndPoint('/API/v1/dogGet');
 
                 res.send(JSON.stringify(sqlRes));
             }
@@ -36,7 +36,7 @@ module.exports = {
                             return;
                         }
                         // Increment end point usage counter
-                        dbUtil.incrementEndPoint('dogPost');
+                        dbUtil.incrementEndPoint('/API/v1/dogPost');
 
                         res.status(200).send(JSON.stringify({ message: `${dogURL} was stored in the DB`, dogID: sqlRes.dogID }));
                     });
@@ -60,7 +60,7 @@ module.exports = {
                     res.status(500).send(JSON.stringify({ message: `Database error! Could not delete ${tag}` }));
                 } else {
                     // Increment end point usage counter
-                    dbUtil.incrementEndPoint('dogTagIdDelete');
+                    dbUtil.incrementEndPoint('/API/v1/dogTagIdDelete');
 
                     res.status(200).send(JSON.stringify({ message: `${tag} deleted successfully!` }));
                 }
@@ -80,7 +80,7 @@ module.exports = {
                 res.status(500).send(JSON.stringify({ message: `Database error!` }));
             } else {
                 // Increment end point usage counter
-                dbUtil.incrementEndPoint('dogTagIdGet');
+                dbUtil.incrementEndPoint('/API/v1/dogTagIdGet');
 
                 res.status(200).send(JSON.stringify(sqlRes));
             }
@@ -102,7 +102,7 @@ module.exports = {
                 res.status(500).send(JSON.stringify({ message: `Database error!` }));
             } else {
                 // Increment end point usage counter
-                dbUtil.incrementEndPoint('dogTagIdPut');
+                dbUtil.incrementEndPoint('/API/v1/dogTagIdPut');
 
                 res.status(200).send(JSON.stringify({ message: `${tag} updated successfully!` }));
             }

@@ -40,7 +40,7 @@ module.exports = {
                         res.status(401).send(JSON.stringify({ message: "Invalid username or password" }));
                     } else {
                         // Increment end point usage counter
-                        dbUtil.incrementEndPoint('adminPost');
+                        dbUtil.incrementEndPoint('/API/v1/adminPost');
 
                         res.status(200).send(JSON.stringify({ token: token, endpoints: sqlRes2 }));
                     }

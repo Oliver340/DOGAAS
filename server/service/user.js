@@ -34,7 +34,7 @@ module.exports = {
                             expiresIn: "12h"
                         });
                         // Increment end point usage counter
-                        dbUtil.incrementEndPoint('userPost');
+                        dbUtil.incrementEndPoint('/API/v1/userPost');
 
                         res.status(200).send(JSON.stringify({ token: token }));
                     }
@@ -70,7 +70,7 @@ module.exports = {
                             expiresIn: "12h"
                         });
                         // Increment end point usage counter
-                        dbUtil.incrementEndPoint('userCreate');
+                        dbUtil.incrementEndPoint('/API/v1/userCreate');
 
                         res.status(200).send(JSON.stringify({ token: token }));
                     }
@@ -95,7 +95,7 @@ module.exports = {
                 res.status(500).send(JSON.stringify({ message: `Database error!` }));
             } else {
                 // Increment end point usage counter
-                dbUtil.incrementEndPoint('userUsernameDelete');
+                dbUtil.incrementEndPoint('/API/v1/userUsernameDelete');
             }
         });
     },
@@ -118,7 +118,7 @@ module.exports = {
                 res.status(500).send(JSON.stringify({ message: `Database error!` }));
             } else {
                 // Increment end point usage counter
-                dbUtil.incrementEndPoint('userUsernamePut');
+                dbUtil.incrementEndPoint('/API/v1/userUsernamePut');
                 res.status(200).send(JSON.stringify({ message: `updated password successfully` }));
             }
         });
