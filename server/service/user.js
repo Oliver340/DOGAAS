@@ -22,7 +22,7 @@ module.exports = {
                         res.status(500).send(JSON.stringify({ message: "Database error!" }));
                     }
 
-                    if (sqlRes > 0) {
+                    if (sqlRes[0]["1"] > 0) {
                         res.status(401).send(JSON.stringify({ message: "Invalid username or password" }));
                     } else {
                         const token = jwt.sign(
@@ -51,31 +51,44 @@ module.exports = {
             res.status(400).send(JSON.stringify({ message: "Username or password cannot be empty" }));
         }
 
-        bcrypt.genSalt(saltRounds, (err, salt) => {
-            bcrypt.hash(password, salt, (err, hash) => {
-                // store hash in database
-                connection.query(`INSERT INTO Users (userName, password)
-                                  VALUES ('${username}', '${hash}')`, 
-                (sqlErr, sqlRes) => {
-                    if (sqlErr) {
-                        res.status(500).send(JSON.stringify({ message: `Database error!` }));
-                    } else {
-                        // create a token that contains the database PK
-                        const token = jwt.sign(
-                        { 
-                            username: username,
-                        },
-                        tokenKey,
-                        {
-                            expiresIn: "12h"
-                        });
-                        // Increment end point usage counter
-                        dbUtil.incrementEndPoint('/API/v1/userCreate');
+        // Check if user already exists
+        connection.query(`SELECT 1 FROM Users 
+                          WHERE userName = '${username}'`, 
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(500).send(JSON.stringify({ message: "Database error!" }));
+            }
 
-                        res.status(200).send(JSON.stringify({ token: token }));
-                    }
+            if (sqlRes[0]["1"] > 0) {
+                res.status(401).send(JSON.stringify({ message: "User already exists!" }));
+            } else {
+                bcrypt.genSalt(saltRounds, (err, salt) => {
+                    bcrypt.hash(password, salt, (err, hash) => {
+                        // store hash in database
+                        connection.query(`INSERT INTO Users (userName, password)
+                                          VALUES ('${username}', '${hash}')`, 
+                        (sqlErr2, sqlRes2) => {
+                            if (sqlErr2) {
+                                res.status(500).send(JSON.stringify({ message: `Database error!` }));
+                            } else {
+                                // create a token that contains the database PK
+                                const token = jwt.sign(
+                                { 
+                                    username: username,
+                                },
+                                tokenKey,
+                                {
+                                    expiresIn: "12h"
+                                });
+                                // Increment end point usage counter
+                                dbUtil.incrementEndPoint('/API/v1/userCreate');
+        
+                                res.status(200).send(JSON.stringify({ token: token }));
+                            }
+                        });
+                    });
                 });
-            });
+            }
         });
     },
 

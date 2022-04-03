@@ -36,7 +36,7 @@ module.exports = {
                         res.status(500).send(JSON.stringify({ message: "Database error!" }));
                     }
                     
-                    if (sqlRes2 > 0) {
+                    if (sqlRes2[0]["1"] > 0) {
                         res.status(401).send(JSON.stringify({ message: "Invalid username or password" }));
                     } else {
                         // Increment end point usage counter
