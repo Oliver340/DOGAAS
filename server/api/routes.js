@@ -11,13 +11,13 @@ module.exports = (router) => {
     router.route('/dog').post(verify, controller.dogPost);
 
     // delete a dog picture
-    router.route('/dog').delete(verify, controller.dogDelete);
+    router.route('/dog/:tagID').delete(verify, controller.dogDelete);
 
     // get a specific dog picture
-    router.route('/dog').get(verify, controller.dogTagIdGet);
+    router.route('/dog/:tagID').get(verify, controller.dogTagIdGet);
 
     // update a specific dog picture
-    router.route('/dog').put(verify, controller.dogTagIdPut);
+    router.route('/dog/:tagID').put(verify, controller.dogTagIdPut);
 
 
     // === User routing === //

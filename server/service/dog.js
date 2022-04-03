@@ -4,7 +4,7 @@ const dbUtil = require('../utils/databaseUtil');
 module.exports = {
     getRandomDog: function (req, res) {
         // Gets random imageurl from dogs table
-        connection.query(`SELECT imageURL FROM Dogs
+        connection.query(`SELECT imageURL, dogId FROM Dogs
                           ORDER BY RAND()
                           LIMIT 1`, 
         (sqlErr, sqlRes) => {
@@ -27,12 +27,19 @@ module.exports = {
             `INSERT INTO Dogs (dogID, imageURL) VALUES (0, '${dogURL}')`,
             (sqlErr, sqlRes) => {
                 if (sqlErr) {
-                    res.status(500).send(`Error storing ${dogURL} in the DB!`);
+                    res.status(500).send(JSON.stringify({ message: `Error storing ${dogURL} in the DB!` }));
                 } else {
-                    // Increment end point usage counter
-                    dbUtil.incrementEndPoint('dogPost');
+                    connection.query(`SELECT MAX(dogID) FROM Dogs`, 
+                    (sqlErr, sqlRes) => {
+                        if (sqlErr) {
+                            res.status(500).send(JSON.stringify({ message: `Error storing ${dogURL} in the DB!` }));
+                            return;
+                        }
+                        // Increment end point usage counter
+                        dbUtil.incrementEndPoint('dogPost');
 
-                    res.status(200).send(`${dogURL} was stored in the DB`);
+                        res.status(200).send(JSON.stringify({ message: `${dogURL} was stored in the DB`, dogID: sqlRes.dogID }));
+                    });
                 }
             }
         );
@@ -40,7 +47,7 @@ module.exports = {
 
     deleteDog: function (req, res) {
         // delete that dog by tag
-        let tag = req.query.tagId;
+        let tag = req.params.tagID;
 
         // username for user purposes
         //let user = req.user.username;
@@ -50,12 +57,12 @@ module.exports = {
             `DELETE FROM Dogs WHERE dogID = ${tag}`,
             (sqlErr, sqlRes) => {
                 if (sqlErr) {
-                    res.status(500).send(`Database error! Could not delete ${tag}`);
+                    res.status(500).send(JSON.stringify({ message: `Database error! Could not delete ${tag}` }));
                 } else {
                     // Increment end point usage counter
                     dbUtil.incrementEndPoint('dogTagIdDelete');
 
-                    res.status(200).send(`${tag} deleted successfully!`);
+                    res.status(200).send(JSON.stringify({ message: `${tag} deleted successfully!` }));
                 }
             }
         );
@@ -63,26 +70,26 @@ module.exports = {
 
     getDogTagId: function (req, res) {
         // get that dog by tag
-        let tag = req.query.tagId;
+        let tag = req.params.tagID;
 
         // Gets dog URL by ID
-        connection.query(`SELECT imageURL FROM Dogs
-                          WHERE tag = ${tag}`, 
+        connection.query(`SELECT imageURL, dogId FROM Dogs
+                          WHERE dogID = ${tag}`, 
         (sqlErr, sqlRes) => {
             if (sqlErr) {
-                res.status(500).send(`Database error!`);
+                res.status(500).send(JSON.stringify({ message: `Database error!` }));
             } else {
                 // Increment end point usage counter
                 dbUtil.incrementEndPoint('dogTagIdGet');
 
-                res.send(JSON.stringify(sqlRes));
+                res.status(200).send(JSON.stringify(sqlRes));
             }
         });
     },
 
     putDogTagId: function (req, res) {
         // update that dog by tag
-        let tag = req.query.tagId;
+        let tag = req.params.tagID;
         let dogURL = req.query.imageURL;
         let user = req.user.username;
 
@@ -92,12 +99,12 @@ module.exports = {
                           WHERE dogId = ${tag}`, 
         (sqlErr, sqlRes) => {
             if (sqlErr) {
-                res.status(500).send(`Database error!`);
+                res.status(500).send(JSON.stringify({ message: `Database error!` }));
             } else {
                 // Increment end point usage counter
                 dbUtil.incrementEndPoint('dogTagIdPut');
 
-                res.status(200).send(`${tag} updated successfully!`);
+                res.status(200).send(JSON.stringify({ message: `${tag} updated successfully!` }));
             }
         });
     },

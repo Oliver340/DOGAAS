@@ -19,11 +19,11 @@ module.exports = {
                                   WHERE userName = '${username}' AND password = '${hash}'`, 
                 (sqlErr, sqlRes) => {
                     if (sqlErr) {
-                        res.status(500).send("Database error!");
+                        res.status(500).send(JSON.stringify({ message: "Database error!" }));
                     }
 
                     if (sqlRes > 0) {
-                        res.status(401).send("Invalid username or password");
+                        res.status(401).send(JSON.stringify({ message: "Invalid username or password" }));
                     } else {
                         const token = jwt.sign(
                         {
@@ -58,7 +58,7 @@ module.exports = {
                                   VALUES ('${username}', '${hash}')`, 
                 (sqlErr, sqlRes) => {
                     if (sqlErr) {
-                        res.status(500).send(`Database error!`);
+                        res.status(500).send(JSON.stringify({ message: `Database error!` }));
                     } else {
                         // create a token that contains the database PK
                         const token = jwt.sign(
@@ -92,7 +92,7 @@ module.exports = {
                           WHERE userName = '${username}'`, 
         (sqlErr, sqlRes) => {
             if (sqlErr) {
-                res.status(500).send(`Database error!`);
+                res.status(500).send(JSON.stringify({ message: `Database error!` }));
             } else {
                 // Increment end point usage counter
                 dbUtil.incrementEndPoint('userUsernameDelete');
@@ -115,10 +115,11 @@ module.exports = {
                           WHERE userName = '${username}'`, 
         (sqlErr, sqlRes) => {
             if (sqlErr) {
-                res.status(500).send(`Database error!`);
+                res.status(500).send(JSON.stringify({ message: `Database error!` }));
             } else {
                 // Increment end point usage counter
                 dbUtil.incrementEndPoint('userUsernamePut');
+                res.status(200).send(JSON.stringify({ message: `updated password successfully` }));
             }
         });
     },

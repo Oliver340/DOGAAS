@@ -14,11 +14,11 @@ module.exports = {
                           WHERE password = '${password}' AND adminName = '${username}'`, 
         (sqlErr, sqlRes) => {
             if (sqlErr) {
-                res.status(500).send("Database error!");
+                res.status(500).send(JSON.stringify({ message: "Database error!" }));
             }
             
             if (sqlRes > 0) {
-                res.status(401).send("Invalid username or password");
+                res.status(401).send(JSON.stringify({ message: "Invalid username or password" }));
             } else {
                 const token = jwt.sign(
                     { 
@@ -33,12 +33,12 @@ module.exports = {
                 // Provide endpoint data
                 connection.query(`SELECT * FROM EndPoints`, (sqlErr2, sqlRes2) => {
                     if (sqlErr2) {
-                        res.status(500).send("Database error!");
+                        res.status(500).send(JSON.stringify({ message: "Database error!" }));
                     }
                     
                     if (sqlRes2 > 0) {
-                        res.status(401).send("Invalid username or password");
-                    }  else {
+                        res.status(401).send(JSON.stringify({ message: "Invalid username or password" }));
+                    } else {
                         // Increment end point usage counter
                         dbUtil.incrementEndPoint('adminPost');
 
