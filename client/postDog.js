@@ -20,7 +20,7 @@ let postDog = function () {
         return;
     }
 
-    xhttp.open("POST", endPoint + '/post-dog', true);
+    xhttp.open("POST", endPoint + '/api/v1/dog', true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send("?dogURL=" + dogURL);
 };

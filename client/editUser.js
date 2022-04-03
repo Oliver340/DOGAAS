@@ -20,7 +20,7 @@ xhttp.onreadystatechange = function () {
 };
 
 let deleteUser = function () {
-    xhttp.open("DELETE", endPoint + '/user', true);
+    xhttp.open("DELETE", endPoint + '/api/v1/user', true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send();
 };
@@ -33,7 +33,7 @@ let editUser = function () {
         return;
     }
 
-    xhttp.open("POST", endPoint + '/user', true);
+    xhttp.open("POST", endPoint + '/api/v1/user', true);
     xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
 };

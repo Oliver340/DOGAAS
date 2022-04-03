@@ -15,10 +15,10 @@ xhttp.onreadystatechange = function() {
 const getDog = function() {
     let selectedOption = dogTag.options[dogTag.selectedIndex].value;
     if (selectedOption == 0) {
-        xhttp.open("GET", endPoint, true);
+        xhttp.open("GET", endPoint + "/api/v1/dog", true);
         xhttp.send();
     } else {
-        xhttp.open("GET", endPoint, true);
+        xhttp.open("GET", endPoint + "/api/v1/dog", true);
         xhttp.send();
     }
 };
