@@ -1,45 +1,46 @@
 const verify = require('../utils/verifyToken');
 const controller = require("./controller");
+const apiversion1 = "/API/v1";
 
 module.exports = (router) => {
     // === Dog routing === //
 
     // get a random dog picture
-    router.route('/dog').get(verify, controller.dogGet);
+    router.route(`${apiversion1}/dog`).get(verify, controller.dogGet);
 
     // post a dog picture
-    router.route('/dog').post(verify, controller.dogPost);
+    router.route(`${apiversion1}/dog`).post(verify, controller.dogPost);
 
     // delete a dog picture
-    router.route('/dog/:tagID').delete(verify, controller.dogDelete);
+    router.route(`${apiversion1}/dog/:tagID`).delete(verify, controller.dogDelete);
 
     // get a specific dog picture
-    router.route('/dog/:tagID').get(verify, controller.dogTagIdGet);
+    router.route(`${apiversion1}/dog/:tagID`).get(verify, controller.dogTagIdGet);
 
     // update a specific dog picture
-    router.route('/dog/:tagID').put(verify, controller.dogTagIdPut);
+    router.route(`${apiversion1}/dog/:tagID`).put(verify, controller.dogTagIdPut);
 
 
     // === User routing === //
 
     // login user
-    router.route('/user').post(controller.userPost);
+    router.route(`${apiversion1}/dog/user`).post(controller.userPost);
 
     // create user
-    router.route('/userCreate').post(controller.userCreate);
+    router.route(`${apiversion1}/userCreate`).post(controller.userCreate);
 
     // suicide
-    router.route('/user/:username').delete(verify, controller.userUsernameDelete);
+    router.route(`${apiversion1}/:username`).delete(verify, controller.userUsernameDelete);
 
     // update a user
-    router.route('/user/:username').put(verify, controller.userUsernamePut);
+    router.route(`${apiversion1}/user/:username`).put(verify, controller.userUsernamePut);
 
 
     // === admin routing === //
 
     // admin login
-    router.route('/admin').post(controller.adminPost);
+    router.route(`${apiversion1}/admin`).post(controller.adminPost);
 
     // heartbeat
-    router.route('/ping').get(controller.pingGet);
+    router.route(`${apiversion1}/ping`).get(controller.pingGet);
 };
