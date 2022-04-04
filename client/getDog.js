@@ -12,13 +12,7 @@ xhttp.onreadystatechange = () => {
             let jsonData = JSON.parse(xhttp.response);
             dogImg.src = jsonData[0].imageURL;
             dogID = jsonData[0].dogId;
-        } else if (xhttp.status == 500) {
-            let jsonData = JSON.parse(xhttp.response);
-            responseText.innerHTML = `<div>${jsonData.message}</div>`;
-        } else if (xhttp.status == 401) {
-            let jsonData = JSON.parse(xhttp.response);
-            responseText.innerHTML = `<div>${jsonData.message}</div>`;
-        } else if (xhttp.status == 201) {
+        } else {
             let jsonData = JSON.parse(xhttp.response);
             responseText.innerHTML = `<div>${jsonData.message}</div>`;
         }

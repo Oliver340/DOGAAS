@@ -10,8 +10,9 @@ xhttp.onreadystatechange = () => {
             let jsonData = JSON.parse(xhttp.response);
             localStorage.setItem('token', jsonData.token);
             window.location.href = "./getDog.html";
-        } else if (xhttp.status == 500) {
-            responseText.innerHTML = xhttp.response;
+        } else {
+            let jsonData = JSON.parse(xhttp.response);
+            responseText.innerHTML = `<div>${jsonData.message}</div>`;
         }
     }
 };

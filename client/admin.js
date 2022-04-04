@@ -9,10 +9,7 @@ xhttp.onreadystatechange = () => {
         if (xhttp.status == 200) {
             let jsonData = JSON.parse(xhttp.response);
             responseText.innerHTML = `<div>${jsonData.message}</div>`;
-        } else if (xhttp.status == 500) {
-            let jsonData = JSON.parse(xhttp.response);
-            responseText.innerHTML = `<div>${jsonData.message}</div>`;
-        } else if (xhttp.status == 401) {
+        } else {
             let jsonData = JSON.parse(xhttp.response);
             responseText.innerHTML = `<div>${jsonData.message}</div>`;
         }
