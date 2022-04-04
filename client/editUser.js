@@ -15,6 +15,9 @@ xhttp.onreadystatechange = () => {
         } else if (xhttp.status == 401) {
             let jsonData = JSON.parse(xhttp.response);
             responseText.innerHTML = `<div>${jsonData.message}</div>`;
+        } else if (xhttp.status == 400) {
+            let jsonData = JSON.parse(xhttp.response);
+            responseText.innerHTML = `<div>${jsonData.message}</div>`;
         }
     }
 };
@@ -24,6 +27,7 @@ let deleteUser = () => {
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send();
+    signOut();
 };
 
 let editUser = () => {
