@@ -52,7 +52,7 @@ editForm.addEventListener("submit", (e) => {
 
 const editUrl = (newURL) => {
     xhttp.open("PUT", endPoint + 'api/v1/dog' + dogID, true);
-    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send(JSON.stringify({ url: newURL }));
 }

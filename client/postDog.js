@@ -26,7 +26,7 @@ let postDog = () => {
     }
 
     xhttp.open("POST", endPoint + 'API/v1/dog', true);
-    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send(JSON.stringify({ url: dogURL }));
 };
