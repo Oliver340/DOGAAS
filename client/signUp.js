@@ -24,7 +24,7 @@ let signUp = () => {
         return;
     }
 
-    xhttp.open("POST", endPoint + '/api/v1/userCreate', true);
+    xhttp.open("POST", endPoint + 'API/v1/userCreate', true);
     xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
 };

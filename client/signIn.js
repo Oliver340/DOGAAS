@@ -28,7 +28,7 @@ let signIn = () => {
         return;
     }
 
-    xhttp.open("POST", endPoint + '/api/v1/user', true);
+    xhttp.open("POST", endPoint + 'API/v1/user', true);
     xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
 };
