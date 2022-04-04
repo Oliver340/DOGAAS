@@ -14,7 +14,7 @@ module.exports = {
                 // Increment end point usage counter
                 dbUtil.incrementEndPoint('/API/v1/dogGet');
 
-                res.send(JSON.stringify({ message: `Dog retrieved!`, imageURL : sqlRes }));
+                res.status(200).send(JSON.stringify({ message: `Dog retrieved!`, imageURL : sqlRes }));
             }
         });
     },
