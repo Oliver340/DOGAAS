@@ -27,12 +27,12 @@ module.exports = {
             `INSERT INTO Dogs (dogID, imageURL) VALUES (0, '${dogURL}')`,
             (sqlErr, sqlRes) => {
                 if (sqlErr) {
-                    res.status(500).send(JSON.stringify({ message: `Error storing ${dogURL} in the DB!` }));
+                    res.status(500).send(JSON.stringify({ message: `Error storing Dog in the DB!` }));
                 } else {
                     connection.query(`SELECT MAX(dogID) FROM Dogs`, 
                     (sqlErr, sqlRes) => {
                         if (sqlErr) {
-                            res.status(500).send(JSON.stringify({ message: `Error storing ${dogURL} in the DB!` }));
+                            res.status(500).send(JSON.stringify({ message: `Error storing Dog in the DB!` }));
                             return;
                         }
                         // Increment end point usage counter
