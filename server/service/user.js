@@ -22,8 +22,8 @@ module.exports = {
                         res.status(500).send(JSON.stringify({ message: "Database error!" }));
                     }
 
-                    if (sqlRes[0]["1"] > 0) {
-                        res.status(401).send(JSON.stringify({ message: "Invalid username or password" }));
+                    if (Object.keys(sqlRes).length === 0) {
+                        res.status(401).send(JSON.stringify({ message: "Invalid username or password!" }));
                     } else {
                         const token = jwt.sign(
                         {
@@ -59,7 +59,7 @@ module.exports = {
                 res.status(500).send(JSON.stringify({ message: "Database error!" }));
             }
 
-            if (sqlRes[0]["1"] > 0) {
+            if (Object.keys(sqlRes).length === 0) {
                 res.status(401).send(JSON.stringify({ message: "User already exists!" }));
             } else {
                 bcrypt.genSalt(saltRounds, (err, salt) => {
