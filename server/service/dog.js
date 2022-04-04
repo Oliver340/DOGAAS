@@ -20,7 +20,7 @@ module.exports = {
     },
 
     postDog: function (req, res) {
-        let dogURL = req.query.dogURL;
+        let dogURL = req.body.dogURL;
 
         // Insert dog into DB
         connection.query(
@@ -90,7 +90,7 @@ module.exports = {
     putDogTagId: function (req, res) {
         // update that dog by tag
         let tag = req.params.tagID;
-        let dogURL = req.query.imageURL;
+        let dogURL = req.body.imageURL;
         let user = req.user.username;
 
         // Update dog in DB
