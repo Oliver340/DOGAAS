@@ -4,7 +4,7 @@ const responseText = document.getElementById("responseText");
 const xhttp = new XMLHttpRequest();
 const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
-xhttp.onreadystatechange = function () {
+xhttp.onreadystatechange = () => {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             let jsonData = JSON.parse(xhttp.response);
@@ -20,7 +20,7 @@ xhttp.onreadystatechange = function () {
     }
 };
 
-let signIn = function () {
+let signIn = () => {
     let usr = usernameInput.value;
     let pwd = passwordInput.value;
     if (!usr.trim().length || !pwd.trim().length) {

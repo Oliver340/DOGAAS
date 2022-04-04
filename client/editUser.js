@@ -4,7 +4,7 @@ const responseText = document.getElementById("responseText");
 const xhttp = new XMLHttpRequest();
 const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
-xhttp.onreadystatechange = function () {
+xhttp.onreadystatechange = () => {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             let jsonData = JSON.parse(xhttp.response);
@@ -19,14 +19,14 @@ xhttp.onreadystatechange = function () {
     }
 };
 
-let deleteUser = function () {
+let deleteUser = () => {
     xhttp.open("DELETE", endPoint + '/api/v1/user' + usernameInput.value, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send();
 };
 
-let editUser = function () {
+let editUser = () => {
     let username = usernameInput.value;
     let password = passwordInput.value;
     if (!username.trim().length || !password.trim().length) {
@@ -40,7 +40,7 @@ let editUser = function () {
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
 };
 
-let signOut = function () {
+let signOut = () => {
     localStorage.setItem('token', "");
     window.location.href = "./signIn.html";
 };

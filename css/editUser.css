@@ -14,7 +14,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: left;
-    background-color: gainsboro;
+    background-color: lightgreen;
     border-radius: 20px;
     padding: 15px;
 }

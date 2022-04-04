@@ -7,7 +7,7 @@ const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
 let dogID;
 
-xhttp.onreadystatechange = function() {
+xhttp.onreadystatechange = () => {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             let jsonData = JSON.parse(xhttp.response);
@@ -23,7 +23,7 @@ xhttp.onreadystatechange = function() {
     }
 };
 
-const getDog = function() {
+const getDog = () => {
     let selectedOption = dogTag.options[dogTag.selectedIndex].value;
     if (selectedOption == 0) {
         xhttp.open("GET", endPoint + "/api/v1/dog", true);
@@ -34,9 +34,10 @@ const getDog = function() {
         xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
         xhttp.send();
     }
-}();
+}
+getDog();
 
-let deleteDog = function () {
+let deleteDog = () => {
     xhttp.open("DELETE", endPoint + '/api/v1/dog' + dogID, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
@@ -48,7 +49,7 @@ editForm.addEventListener("submit", (e) => {
     editUrl(editForm.urlInput.value);
 })
 
-const editURL = function(newURL) {
+const editURL = (newURL) => {
     xhttp.open("PUT", endPoint + '/api/v1/dog' + dogID, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );

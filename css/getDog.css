@@ -8,6 +8,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: lightgreen;
+    border-radius: 20px;
+    padding: 2%;
 }
 #content > * {
     margin: 1%;

@@ -3,7 +3,7 @@ const responseText = document.getElementById("responseText");
 const xhttp = new XMLHttpRequest();
 const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
-xhttp.onreadystatechange = function () {
+xhttp.onreadystatechange = () => {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             responseText.innerHTML = `<div>${xhttp.response}</div>`;
@@ -17,7 +17,7 @@ xhttp.onreadystatechange = function () {
     }
 };
 
-let postDog = function () {
+let postDog = () => {
     let dogURL = dogInput.value;
     if (!dogURL.trim().length) {
         alert('Cannot leave any fields blank');
