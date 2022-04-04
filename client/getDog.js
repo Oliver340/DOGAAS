@@ -49,5 +49,6 @@ editForm.addEventListener("submit", (e) => {
 const editURL = function(newURL) {
     xhttp.open("PUT", endPoint + '/api/v1/dog' + dogID, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send("?imageURL=" + newURL);
 }
