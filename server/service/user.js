@@ -12,39 +12,39 @@ module.exports = {
         const username = req.body.username;
 
         // user login query
-        // salted and hashed password so we can find it in the database
         connection.query(`SELECT password FROM Users 
                           WHERE userName = '${username}'`, 
-            (sqlErr, sqlRes) => {
-                if (sqlErr) {
-                    res.status(500).send(JSON.stringify({ message: "Database error!" }));
-                }              
+        (sqlErr, sqlRes) => {
+            if (sqlErr) {
+                res.status(500).send(JSON.stringify({ message: "Database error!" }));
+            }  
 
-                if (Object.keys(sqlRes).length === 0) {
-                    res.status(401).send(JSON.stringify({ message: "Invalid username or password!" }));
-                } else {
-                    bcrypt.compare(password, sqlRes[0]["password"], function(err, result) {
-                        if (result == true) {
-                            const token = jwt.sign(
+            if (Object.keys(sqlRes).length === 0) {
+                res.status(401).send(JSON.stringify({ message: "Invalid username or password!" }));
+            } else {
+                bcrypt.compare(password, sqlRes[0]["password"], function(err, result) {
+                    if (result == true) {
+                        const token = jwt.sign(
                             {
                                 username: username
                             },
                             tokenKey,
                             {
                                 expiresIn: "12h"
-                            });
-                            // Increment end point usage counter
-                            dbUtil.incrementEndPoint('/API/v1/userPost');
+                            }
+                        );
+                        // Increment end point usage counter
+                        dbUtil.incrementEndPoint('/API/v1/userPost');
 
-                            res.status(200).send(JSON.stringify({ token: token }));
-                        } else {
-                            dbUtil.incrementEndPoint('/API/v1/userPost');
-                            
-                            res.status(401).send(JSON.stringify({ message: "Invalid username or password!" }));
-                        }
-                    });
-                }
-            });
+                        res.status(200).send(JSON.stringify({ token: token }));
+                    } else {
+                        dbUtil.incrementEndPoint('/API/v1/userPost');
+
+                        res.status(401).send(JSON.stringify({ message: "Invalid username or password!" }));
+                    }
+                });
+            }
+        });
     },
 
     createUser: function (req, res) {
@@ -64,8 +64,6 @@ module.exports = {
             }
 
             if (Object.keys(sqlRes).length === 0) {
-                res.status(401).send(JSON.stringify({ message: "User already exists!" }));
-            } else {
                 bcrypt.genSalt(saltRounds, (err, salt) => {
                     bcrypt.hash(password, salt, (err, hash) => {
                         // store hash in database
@@ -92,6 +90,8 @@ module.exports = {
                         });
                     });
                 });
+            } else {
+                res.status(401).send(JSON.stringify({ message: "User already exists!" }));
             }
         });
     },
