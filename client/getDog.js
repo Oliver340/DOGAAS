@@ -1,7 +1,7 @@
 const dogImg = document.getElementById("dogImg");
 const dogTag = document.getElementById("dogTag");
 const responseText = document.getElementById("responseText");
-const editForm = document.getElementById("editDogForm");
+// const editForm = document.getElementById("editDogForm");
 const xhttp = new XMLHttpRequest();
 const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
@@ -24,16 +24,16 @@ xhttp.onreadystatechange = () => {
 };
 
 const getDog = () => {
-    let selectedOption = dogTag.options[dogTag.selectedIndex].value;
-    if (selectedOption == 0) {
+    // let selectedOption = dogTag.options[dogTag.selectedIndex].value;
+    // if (selectedOption == 0) {
         xhttp.open("GET", endPoint + "API/v1/dog", true);
         xhttp.send();
-    } else {
-        xhttp.open("GET", endPoint + "API/v1/dog" + selectedOption, true);
-        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
-        xhttp.send();
-    }
+    // } else {
+    //     xhttp.open("GET", endPoint + "API/v1/dog" + selectedOption, true);
+    //     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
+    //     xhttp.send();
+    // }
 }
 getDog();
 
