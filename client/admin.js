@@ -10,9 +10,17 @@ xhttp.onreadystatechange = () => {
             let jsonData = JSON.parse(xhttp.response);
             console.log(jsonData);
             jsonData.forEach(element => {
-                let endPoints = document.createElement("div");
-                endPoints.innerHTML = element.method + " " + element.endPoint + " " + element.requestCount;
-                responseText.append(endPoints);
+                let table = document.createElement("tr");
+                let method = document.createElement("td");
+                method.innerHTML = element.method;
+                let endPoint = document.createElement("td");
+                endPoint.innerHTML = element.endPoint;
+                let requestCount = document.createElement("td");
+                requestCount.innerHTML = element.requestCount;
+                table.append(method);
+                table.append(endPoint);
+                table.append(requestCount);
+                document.getElementById("endPointTable").append(table);
             });
         } else {
             let jsonData = JSON.parse(xhttp.response);

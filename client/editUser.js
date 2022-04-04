@@ -17,6 +17,13 @@ xhttp.onreadystatechange = () => {
 };
 
 let deleteUser = () => {
+    let usr = usernameInput.value;
+    let pwd = passwordInput.value;
+    if (!usr.trim().length || !pwd.trim().length) {
+        alert('Cannot leave any fields blank');
+        return;
+    }
+
     xhttp.open("DELETE", endPoint + 'API/v1/user/' + usernameInput.value, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
