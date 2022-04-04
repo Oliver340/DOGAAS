@@ -18,3 +18,9 @@ body {
 #dogImg {
     width: 50vmin;
 }
+#editDogForm > input[type="submit"] {
+    width: 20%;
+}
+#urlInput {
+    width: 40%;
+}
