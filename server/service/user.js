@@ -119,25 +119,29 @@ module.exports = {
 
     putUserUsername: function (req, res) {
         const username = req.params.username;
-        const password = req.body.password;
+        const newPassword = req.body.password;
 
-        // honestly not needed. if the user token exist it already contains the username and we should just use that
         if (username != req.user.username) {
             res.status(401).send(JSON.stringify({ message: "You may only update yourself!" }));
         }
-
-        // update password
-        connection.query(`UPDATE Users
-                          SET password = '${password}'
-                          WHERE userName = '${username}'`, 
-        (sqlErr, sqlRes) => {
-            if (sqlErr) {
-                res.status(500).send(JSON.stringify({ message: `Database error!` }));
-            } else {
-                // Increment end point usage counter
-                dbUtil.incrementEndPoint('/API/v1/userUsernamePut');
-                res.status(200).send(JSON.stringify({ message: `updated password successfully` }));
-            }
+        
+        // Hash and update password
+        bcrypt.genSalt(saltRounds, (err, salt) => {
+            bcrypt.hash(newPassword, salt, (err, hash) => {
+                // update password
+                connection.query(`UPDATE Users
+                                  SET password = '${hash}'
+                                  WHERE userName = '${username}'`, 
+                (sqlErr, sqlRes) => {
+                    if (sqlErr) {
+                        res.status(500).send(JSON.stringify({ message: `Database error!` }));
+                    } else {
+                        // Increment end point usage counter
+                        dbUtil.incrementEndPoint('/API/v1/userUsernamePut');
+                        res.status(200).send(JSON.stringify({ message: `updated password successfully` }));
+                    }
+                });
+            });
         });
     },
 }
