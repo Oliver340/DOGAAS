@@ -27,9 +27,9 @@ let deleteUser = () => {
 };
 
 let editUser = () => {
-    let username = usernameInput.value;
-    let password = passwordInput.value;
-    if (!username.trim().length || !password.trim().length) {
+    let usr = usernameInput.value;
+    let pwd = passwordInput.value;
+    if (!usr.trim().length || !pwd.trim().length) {
         alert('Cannot leave any fields blank');
         return;
     }
