@@ -31,6 +31,7 @@ const getDog = function() {
     } else {
         xhttp.open("GET", endPoint + "/api/v1/dog" + selectedOption, true);
         xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
         xhttp.send();
     }
 }();
@@ -38,6 +39,7 @@ const getDog = function() {
 let deleteDog = function () {
     xhttp.open("DELETE", endPoint + '/api/v1/dog' + dogID, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send();
 };
 

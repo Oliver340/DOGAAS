@@ -29,5 +29,6 @@ let validateAdmin = function () {
 
     xhttp.open("POST", endPoint + '/api/v1/admin', true);
     xhttp.setRequestHeader("Content-Type", "application/JSON");
+    xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
 };
