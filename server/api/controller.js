@@ -1,6 +1,7 @@
 const dog = require('../service/dog');
 const user = require('../service/user');
 const admin = require('../service/admin');
+const serverUtil = require('../service/serverUtil.js');
 
 let controllers = {
     dogGet: function(req, res) {
@@ -44,10 +45,7 @@ let controllers = {
     },
 
     pingGet: function(req, res) {
-        // Increment end point usage counter
-        dbUtil.incrementEndPoint('pingGet');
-
-        res.status(200).send(JSON.stringify({ message: "alive, probably" }));
+        serverUtil.ping(req,res);
     },
 };
 
