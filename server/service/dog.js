@@ -104,7 +104,7 @@ module.exports = {
                 // Increment end point usage counter
                 dbUtil.incrementEndPoint('/API/v1/dogTagIdPut');
 
-                res.status(200).send(JSON.stringify({ message: `${tag} updated successfully!` }));
+                res.status(201).send(JSON.stringify({ message: `${tag} updated successfully!` }));
             }
         });
     },

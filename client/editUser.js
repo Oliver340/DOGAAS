@@ -20,7 +20,7 @@ xhttp.onreadystatechange = () => {
 };
 
 let deleteUser = () => {
-    xhttp.open("DELETE", endPoint + 'API/v1/user' + usernameInput.value, true);
+    xhttp.open("DELETE", endPoint + 'API/v1/user/' + usernameInput.value, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send();
@@ -34,7 +34,7 @@ let editUser = () => {
         return;
     }
 
-    xhttp.open("PUT", endPoint + 'API/v1/user' + usr, true);
+    xhttp.open("PUT", endPoint + 'API/v1/user/' + usr, true);
     xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
