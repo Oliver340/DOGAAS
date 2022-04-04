@@ -8,29 +8,33 @@ xhttp.onreadystatechange = () => {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             let jsonData = JSON.parse(xhttp.response);
+            responseText.innerHTML = "";
+            let table = document.createElement("table");
+            let tr = document.createElement("tr");
+            let methodTitle = document.createElement("th");
+            methodTitle.innerHTML = "Method";
+            let endPointTitle = document.createElement("th");
+            endPointTitle.innerHTML = "Endpoint";
+            let requestCountTitle = document.createElement("th");
+            requestCountTitle.innerHTML = "Requests";
+            tr.append(methodTitle);
+            tr.append(endPointTitle);
+            tr.append(requestCountTitle);
+            table.append(tr);
             jsonData.forEach(element => {
-                let table = document.createElement("tr");
-                table.id = "endPointTable";
-                let methodTitle = document.createElement("th");
-                methodTitle.innerHTML = "Method";
-                let endPointTitle = document.createElement("th");
-                endPointTitle.innerHTML = "Endpoint";
-                let requestCountTitle = document.createElement("th");
-                requestCountTitle.innerHTML = "Requests";
-                table.append(methodTitle);
-                table.append(endPointTitle);
-                table.append(requestCount);
+                let tr2 = document.createElement("tr");
                 let method = document.createElement("td");
                 method.innerHTML = element.method;
                 let endPoint = document.createElement("td");
                 endPoint.innerHTML = element.endPoint;
                 let requestCount = document.createElement("td");
                 requestCount.innerHTML = element.requestCount;
-                table.append(method);
-                table.append(endPoint);
-                table.append(requestCount);
-                responseText.append(table);
+                tr2.append(method);
+                tr2.append(endPoint);
+                tr2.append(requestCount);
+                table.append(tr2);
             });
+            responseText.append(table);
         } else {
             let jsonData = JSON.parse(xhttp.response);
             responseText.innerHTML = `<div>${jsonData.message}</div>`;
