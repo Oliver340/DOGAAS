@@ -27,6 +27,7 @@ const getDog = () => {
     // let selectedOption = dogTag.options[dogTag.selectedIndex].value;
     // if (selectedOption == 0) {
         xhttp.open("GET", endPoint + "API/v1/dog", true);
+        xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
         xhttp.send();
     // } else {
     //     xhttp.open("GET", endPoint + "API/v1/dog" + selectedOption, true);
