@@ -19,7 +19,7 @@ xhttp.onreadystatechange = () => {
                 requestCountTitle.innerHTML = "Requests";
                 table.append(methodTitle);
                 table.append(endPointTitle);
-                table.append(requestCountTitle);
+                table.append(requestCount);
                 let method = document.createElement("td");
                 method.innerHTML = element.method;
                 let endPoint = document.createElement("td");
@@ -29,7 +29,7 @@ xhttp.onreadystatechange = () => {
                 table.append(method);
                 table.append(endPoint);
                 table.append(requestCount);
-                document.getElementById("endPointTable").append(table);
+                responseText.append(table);
             });
         } else {
             let jsonData = JSON.parse(xhttp.response);
