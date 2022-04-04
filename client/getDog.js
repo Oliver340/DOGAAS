@@ -10,8 +10,8 @@ xhttp.onreadystatechange = () => {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             let jsonData = JSON.parse(xhttp.response);
-            dogImg.src = jsonData[0].imageURL;
-            dogID = jsonData[0].dogId;
+            dogImg.src = jsonData[0].imageURL.imageURL;
+            dogID = jsonData[0].imageURL.dogId;
             responseText.innerHTML = `<div>${jsonData[0].message}</div>`;
         } else {
             let jsonData = JSON.parse(xhttp.response);
