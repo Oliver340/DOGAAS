@@ -12,11 +12,11 @@ xhttp.onreadystatechange = () => {
             jsonData.forEach(element => {
                 let table = document.createElement("tr");
                 table.id = "endPointTable";
-                let method = document.createElement("td");
+                let method = document.createElement("th");
                 method.innerHTML = "Method";
-                let endPoint = document.createElement("td");
+                let endPoint = document.createElement("th");
                 endPoint.innerHTML = "Endpoint";
-                let requestCount = document.createElement("td");
+                let requestCount = document.createElement("th");
                 requestCount.innerHTML = "Requests";
                 table.append(method);
                 table.append(endPoint);
