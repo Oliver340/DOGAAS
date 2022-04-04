@@ -1,7 +1,7 @@
 const dogImg = document.getElementById("dogImg");
-const dogTag = document.getElementById("dogTag");
+//const dogTag = document.getElementById("dogTag");
 const responseText = document.getElementById("responseText");
-// const editForm = document.getElementById("editDogForm");
+const editForm = document.getElementById("editDogForm");
 const xhttp = new XMLHttpRequest();
 const endPoint = "https://dogaas.patrickng.ca/"; //CHANGE
 
@@ -50,7 +50,7 @@ editForm.addEventListener("submit", (e) => {
     editUrl(editForm.urlInput.value);
 })
 
-const editURL = (newURL) => {
+const editUrl = (newURL) => {
     xhttp.open("PUT", endPoint + 'api/v1/dog' + dogID, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );

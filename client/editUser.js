@@ -34,7 +34,7 @@ let editUser = () => {
         return;
     }
 
-    xhttp.open("PUT", endPoint + 'API/v1/user' + usernameInput.value, true);
+    xhttp.open("PUT", endPoint + 'API/v1/user' + usr, true);
     xhttp.setRequestHeader("Content-Type", "application/JSON");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send(JSON.stringify({ username: usr, password: pwd }));
