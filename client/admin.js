@@ -8,24 +8,23 @@ xhttp.onreadystatechange = () => {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             let jsonData = JSON.parse(xhttp.response);
-            console.log(jsonData);
             jsonData.forEach(element => {
                 let table = document.createElement("tr");
                 table.id = "endPointTable";
+                let methodTitle = document.createElement("th");
+                methodTitle.innerHTML = "Method";
+                let endPointTitle = document.createElement("th");
+                endPointTitle.innerHTML = "Endpoint";
+                let requestCountTitle = document.createElement("th");
+                requestCountTitle.innerHTML = "Requests";
+                table.append(methodTitle);
+                table.append(endPointTitle);
+                table.append(requestCountTitle);
                 let method = document.createElement("td");
-                method.innerHTML = "Method";
-                let endPoint = document.createElement("td");
-                endPoint.innerHTML = "Endpoint";
-                let requestCount = document.createElement("td");
-                requestCount.innerHTML = "Requests";
-                table.append(method);
-                table.append(endPoint);
-                table.append(requestCount);
-                method = document.createElement("td");
                 method.innerHTML = element.method;
-                endPoint = document.createElement("td");
+                let endPoint = document.createElement("td");
                 endPoint.innerHTML = element.endPoint;
-                requestCount = document.createElement("td");
+                let requestCount = document.createElement("td");
                 requestCount.innerHTML = element.requestCount;
                 table.append(method);
                 table.append(endPoint);
