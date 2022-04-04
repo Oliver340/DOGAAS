@@ -8,7 +8,12 @@ xhttp.onreadystatechange = () => {
     if (xhttp.readyState == 4) {
         if (xhttp.status == 200) {
             let jsonData = JSON.parse(xhttp.response);
-            responseText.innerHTML = `<div>${jsonData.message}</div>`;
+            console.log(jsonData);
+            jsonData.forEach(element => {
+                let endPoints = document.createElement("div");
+                endPoints.innerHTML = element.method + " " + element.endPoint + " " + element.requestCount;
+                responseText.append(endPoints);
+            });
         } else {
             let jsonData = JSON.parse(xhttp.response);
             responseText.innerHTML = `<div>${jsonData.message}</div>`;
