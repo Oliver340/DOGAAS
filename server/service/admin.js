@@ -1,9 +1,6 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const connection = require('../utils/databaseConnection');
 const dbUtil = require('../utils/databaseUtil');
-
-const tokenKey = require('../utils/generateTokenKey');
 
 module.exports = {
     postAdmin: function (req, res) {
@@ -24,16 +21,6 @@ module.exports = {
             } else {
                 bcrypt.compare(password, sqlRes[0]["password"], function(err, result) {
                     if (result == true) {
-                        const token = jwt.sign(
-                            { 
-                                username: username,
-                            },
-                            tokenKey,
-                            {
-                                expiresIn: "12h"
-                            }
-                        );
-                        
                         // Provide endpoint data
                         connection.query(`SELECT * FROM EndPoints`, (sqlErr2, sqlRes2) => {
                             if (sqlErr2) {
@@ -43,7 +30,7 @@ module.exports = {
                              // Increment end point usage counter
                              dbUtil.incrementEndPoint('/API/v1/adminPost');
         
-                             res.status(200).send(JSON.stringify({ token: token, endpoints: sqlRes2 }));
+                             res.status(200).send(JSON.stringify(sqlRes2));
                         });
                     } else {
                         dbUtil.incrementEndPoint('/API/v1/adminPost');
