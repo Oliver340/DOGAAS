@@ -18,6 +18,9 @@ xhttp.onreadystatechange = () => {
         } else if (xhttp.status == 401) {
             let jsonData = JSON.parse(xhttp.response);
             responseText.innerHTML = `<div>${jsonData.message}</div>`;
+        } else if (xhttp.status == 201) {
+            let jsonData = JSON.parse(xhttp.response);
+            responseText.innerHTML = `<div>${jsonData.message}</div>`;
         }
     }
 };
@@ -27,6 +30,8 @@ const getDog = () => {
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send();
 }
+
+getDog();
 
 let deleteDog = () => {
     xhttp.open("DELETE", endPoint + 'API/v1/dog/' + dogID, true);

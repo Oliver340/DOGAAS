@@ -62,7 +62,7 @@ module.exports = {
                     // Increment end point usage counter
                     dbUtil.incrementEndPoint('/API/v1/dogTagIdDelete');
 
-                    res.status(200).send(JSON.stringify({ message: `${tag} deleted successfully!` }));
+                    res.status(201).send(JSON.stringify({ message: `${tag} deleted successfully!` }));
                 }
             }
         );
