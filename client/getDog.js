@@ -12,7 +12,7 @@ xhttp.onreadystatechange = () => {
             let jsonData = JSON.parse(xhttp.response);
             dogImg.src = jsonData.imageURL[0].imageURL;
             dogID = jsonData.imageURL[0].dogId;
-            responseText.innerHTML = `<div>${jsonData[0].message}</div>`;
+            responseText.innerHTML = `<div>${jsonData.message}</div>`;
         } else {
             let jsonData = JSON.parse(xhttp.response);
             responseText.innerHTML = `<div>${jsonData.message}</div>`;
