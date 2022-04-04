@@ -1,5 +1,4 @@
 const dogImg = document.getElementById("dogImg");
-//const dogTag = document.getElementById("dogTag");
 const responseText = document.getElementById("responseText");
 const editForm = document.getElementById("editDogForm");
 const xhttp = new XMLHttpRequest();
@@ -24,22 +23,13 @@ xhttp.onreadystatechange = () => {
 };
 
 const getDog = () => {
-    // let selectedOption = dogTag.options[dogTag.selectedIndex].value;
-    // if (selectedOption == 0) {
-        xhttp.open("GET", endPoint + "API/v1/dog", true);
-        xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
-        xhttp.send();
-    // } else {
-    //     xhttp.open("GET", endPoint + "API/v1/dog" + selectedOption, true);
-    //     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    //     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
-    //     xhttp.send();
-    // }
+    xhttp.open("GET", endPoint + "API/v1/dog", true);
+    xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
+    xhttp.send();
 }
-getDog();
 
 let deleteDog = () => {
-    xhttp.open("DELETE", endPoint + 'API/v1/dog' + dogID, true);
+    xhttp.open("DELETE", endPoint + 'API/v1/dog/' + dogID, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader( "x-access-token", localStorage.getItem('token') );
     xhttp.send();

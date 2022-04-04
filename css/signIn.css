@@ -8,13 +8,13 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: lightgreen;
 }
 #loginContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: left;
-    background-color: lightgreen;
     border-radius: 20px;
     padding: 15px;
 }

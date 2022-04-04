@@ -8,15 +8,15 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: lightgreen;
+    border-radius: 20px;
+    padding: 1%;
 }
 #loginContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: left;
-    background-color: lightgreen;
-    border-radius: 20px;
-    padding: 15px;
 }
 #loginContainer > * {
     margin: 10px;
