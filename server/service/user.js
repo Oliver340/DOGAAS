@@ -4,7 +4,7 @@ const connection = require('../utils/databaseConnection');
 const dbUtil = require('../utils/databaseUtil');
 
 const saltRounds = 10;
-const tokenKey = "iR%^anOi2br67"; // should be in .env but w/e
+const tokenKey = require('../utils/generateTokenKey');
 
 module.exports = {
     postUser: function (req, res) {
